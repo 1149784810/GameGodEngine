@@ -26,3 +26,9 @@ htmlcov/
 .dmypy.json
 *.db
 *.sqlite3
+
+# 测试截图
+test_screenshots/
+
+# 项目生成目录
+projects/
