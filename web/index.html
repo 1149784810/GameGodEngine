@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩阵游戏引擎 | Matrix Game Engine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Markdown 渲染库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    <!-- Markdown 代码高亮 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/json.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/markdown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/bash.min.js"></script>
+</head>
+<body>
+    <div class="matrix-bg">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+    
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">◈</span>
+                <h1>矩阵游戏引擎</h1>
+            </div>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-label">状态</span>
+                    <span class="stat-value" id="systemStatus">● 就绪</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">连接</span>
+                    <span class="stat-value" id="connectionStatus">● 离线</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 输入面板 -->
+            <section class="input-panel" id="inputPanel">
+                <div class="panel-header">
+                    <h2>🎮 创建新游戏</h2>
+                    <p class="panel-desc">描述你的游戏想法，AI将自动完成开发</p>
+                </div>
+                <div class="input-group">
+                    <label for="gameIdea">游戏想法</label>
+                    <textarea 
+                        id="gameIdea" 
+                        placeholder="例如：创建一个连连看游戏，有计时功能和排行榜..."
+                        rows="4"
+                    ></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="projectName">项目名称（可选）</label>
+                    <input 
+                        type="text" 
+                        id="projectName" 
+                        placeholder="MyAwesomeGame"
+                    >
+                </div>
+                <button class="btn-primary" id="startBtn" onclick="startDevelopment()">
+                    <span class="btn-icon">▶</span>
+                    开始开发
+                </button>
+            </section>
+
+            <!-- 可视化工作流面板 -->
+            <section class="workflow-panel hidden" id="workflowPanel">
+                <div class="panel-header">
+                    <h2>🚀 开发进度</h2>
+                    <div class="workflow-controls">
+                        <button class="btn-secondary" onclick="togglePause()" id="pauseBtn">
+                            ⏸ 暂停
+                        </button>
+                        <button class="btn-secondary" onclick="resetWorkflow()">
+                            🔄 重置
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 阶段进度条 - 主要路径 -->
+                <div class="phase-progress">
+                    <div class="phase-bar" id="phaseBar">
+                        <div class="phase-step" data-phase="design" data-role="lead_designer" onclick="handlePhaseClick('design')">
+                            <span class="phase-icon">📋</span>
+                            <span class="phase-name">策划</span>
+                            <div class="phase-dot"></div>
+                        </div>
+                        <div class="phase-connector"></div>
+                        <div class="phase-step" data-phase="program" data-role="lead_programmer" onclick="handlePhaseClick('program')">
+                            <span class="phase-icon">💻</span>
+                            <span class="phase-name">开发</span>
+                            <div class="phase-dot"></div>
+                        </div>
+                        <div class="phase-connector"></div>
+                        <div class="phase-step" data-phase="test" data-role="tester" onclick="handlePhaseClick('test')">
+                            <span class="phase-icon">🧪</span>
+                            <span class="phase-name">测试</span>
+                            <div class="phase-dot"></div>
+                        </div>
+                        <div class="phase-connector"></div>
+                        <div class="phase-step" data-phase="deploy" data-role="deployer" onclick="handlePhaseClick('deploy')">
+                            <span class="phase-icon">🚀</span>
+                            <span class="phase-name">部署</span>
+                            <div class="phase-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 并行子任务区域 - 由后端动态创建 -->
+                <div class="parallel-workers" id="parallelWorkers">
+                    <!-- 动态生成子策划/子程序按钮 -->
+                </div>
+
+                <!-- 输出控制台 -->
+                <section class="console-panel" id="consolePanel">
+                    <div class="panel-header">
+                        <h3>📟 系统输出</h3>
+                        <div class="console-controls">
+                            <button class="btn-icon-only" onclick="clearConsole()" title="清空">🗑</button>
+                            <button class="btn-icon-only" onclick="toggleAutoScroll()" title="自动滚动" id="autoScrollBtn">📜</button>
+                        </div>
+                    </div>
+                    <div class="console-output" id="consoleOutput">
+                        <div class="console-line system">
+                            <span class="timestamp">[系统]</span>
+                            <span class="content">矩阵游戏引擎已就绪，请输入游戏想法开始开发...</span>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- 右侧滑出消息栏 - 实时流式输出 -->
+            <div class="stream-panel hidden" id="streamPanel">
+                <div class="stream-header">
+                    <h3 id="streamTitle">实时输出</h3>
+                    <button class="btn-close" onclick="closeStreamPanel()">×</button>
+                </div>
+                <div class="stream-content" id="streamContent">
+                    <!-- 实时流式输出内容 -->
+                </div>
+                <div class="stream-status" id="streamStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">等待中...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- 底部 -->
+        <footer class="footer">
+            <p>Matrix Game Engine v1.0 | Powered by AI</p>
+        </footer>
+    </div>
+
+    <!-- 模板：子工种按钮 -->
+    <template id="subWorkerTemplate">
+        <div class="sub-worker-btn" data-worker-id="" onclick="handleSubWorkerClick(this)">
+            <span class="worker-dot"></span>
+            <span class="worker-name"></span>
+            <span class="worker-status"></span>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>

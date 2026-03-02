@@ -1,0 +1,92 @@
+{
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "duration_seconds": 36.352736,
+  "results": [
+    {
+      "test_name": "页面加载",
+      "passed": true,
+      "details": "gameIdea=✓, projectName=✓, startBtn=✓, systemStatus=✓, connectionStatus=✓, title=✓",
+      "screenshot": "test_screenshots\\001_page_load.png",
+      "timestamp": "2026-03-02T17:19:11.372574"
+    },
+    {
+      "test_name": "WebSocket连接",
+      "passed": true,
+      "details": "状态: ● 在线",
+      "screenshot": "test_screenshots\\002_websocket_connection.png",
+      "timestamp": "2026-03-02T17:19:13.489310"
+    },
+    {
+      "test_name": "输入验证",
+      "passed": true,
+      "details": "空输入时停留在输入面板",
+      "screenshot": "test_screenshots\\003_input_validation.png",
+      "timestamp": "2026-03-02T17:19:14.206480"
+    },
+    {
+      "test_name": "开始开发流程",
+      "passed": true,
+      "details": "workflow_visible=True, input_hidden=True, phase_bar_visible=True",
+      "screenshot": "test_screenshots\\004_start_development.png",
+      "timestamp": "2026-03-02T17:19:16.534883"
+    },
+    {
+      "test_name": "控制台面板",
+      "passed": true,
+      "details": "console_exists=True, has_content=True, cleared=True",
+      "screenshot": "test_screenshots\\005_console_panel.png",
+      "timestamp": "2026-03-02T17:19:17.925110"
+    },
+    {
+      "test_name": "流式输出面板开关",
+      "passed": true,
+      "details": "initial_hidden=True, after_click_visible=True, close_works=True",
+      "screenshot": "test_screenshots\\006_stream_panel_toggle.png",
+      "timestamp": "2026-03-02T17:19:19.843348"
+    },
+    {
+      "test_name": "阶段导航点击",
+      "passed": true,
+      "details": "design=✓, program=✓, test=✓, deploy=✓",
+      "screenshot": "test_screenshots\\007_phase_navigation.png",
+      "timestamp": "2026-03-02T17:19:21.226349"
+    },
+    {
+      "test_name": "暂停/继续按钮",
+      "passed": true,
+      "details": "initial='\n                            ⏸ 暂停\n                        ', after_pause='▶ 继续', after_resume='⏸ 暂停'",
+      "screenshot": "test_screenshots\\008_pause_button.png",
+      "timestamp": "2026-03-02T17:19:22.611895"
+    },
+    {
+      "test_name": "重置按钮",
+      "passed": true,
+      "details": "input_visible=True, workflow_hidden=True",
+      "screenshot": "test_screenshots\\009_reset_button.png",
+      "timestamp": "2026-03-02T17:19:24.839985"
+    },
+    {
+      "test_name": "自动滚动切换",
+      "passed": true,
+      "details": "button_exists=True, clicked=True",
+      "screenshot": "test_screenshots\\010_auto_scroll_toggle.png",
+      "timestamp": "2026-03-02T17:19:28.449731"
+    },
+    {
+      "test_name": "完整工作流模拟",
+      "passed": true,
+      "details": "workflow_visible=✓, console_visible=✓, phase_bar_visible=✓, has_new_content=✓",
+      "screenshot": "test_screenshots\\011_full_workflow.png",
+      "timestamp": "2026-03-02T17:19:38.704153"
+    },
+    {
+      "test_name": "响应式布局",
+      "passed": true,
+      "details": "desktop=✓, laptop=✓, tablet=✓, mobile=✓",
+      "screenshot": null,
+      "timestamp": "2026-03-02T17:19:41.281862"
+    }
+  ]
+}

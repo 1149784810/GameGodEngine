@@ -1,0 +1,12 @@
+# 矩阵游戏引擎 - Web服务依赖
+# 后端API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+python-multipart>=0.0.6
+
+# 原有依赖（确保包含）
+langchain>=0.1.0
+langgraph>=0.0.50
+openai>=1.6.0
+pydantic>=2.5.0
