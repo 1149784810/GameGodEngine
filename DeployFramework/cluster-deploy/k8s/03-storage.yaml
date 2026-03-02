@@ -1,0 +1,65 @@
+# =====================================================
+# GameGodEngine Kubernetes 集群部署配置
+# 03-storage.yaml - 持久化存储配置
+# =====================================================
+
+# 项目文件存储 PVC - 用于存储生成的游戏项目
+# 需要 ReadWriteMany 以支持多 Pod 同时访问
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: projects-pvc
+  namespace: gamegodengine
+  labels:
+    app.kubernetes.io/name: gamegodengine
+    app.kubernetes.io/component: storage
+spec:
+  accessModes:
+    - ReadWriteMany
+  # 根据云厂商选择合适的 StorageClass
+  # AWS: efs-sc
+  # 阿里云: alicloud-nas
+  # 腾讯云: cbs
+  # 自建: nfs-client
+  storageClassName: nfs-client
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+# PostgreSQL 数据存储 PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: gamegodengine
+  labels:
+    app.kubernetes.io/name: gamegodengine
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/part-of: postgres
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+# Redis 数据存储 PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: gamegodengine
+  labels:
+    app.kubernetes.io/name: gamegodengine
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/part-of: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 10Gi

@@ -1,0 +1,14 @@
+# =====================================================
+# GameGodEngine Kubernetes 集群部署配置
+# 00-namespace.yaml - 命名空间配置
+# =====================================================
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gamegodengine
+  labels:
+    name: gamegodengine
+    environment: production
+    app.kubernetes.io/name: gamegodengine
+    app.kubernetes.io/component: namespace

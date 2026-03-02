@@ -1,0 +1,67 @@
+# =====================================================
+# GameGodEngine 简单开发部署方案
+# Docker Compose 配置 - 适合 Linux 开发服务器
+# =====================================================
+
+version: '3.8'
+
+services:
+  # 主应用服务
+  gamegodengine:
+    build:
+      context: ../..
+      dockerfile: DeployFramework/simple-deploy/docker/Dockerfile.simple
+    container_name: gamegodengine-dev
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - WORKERS=2
+      - LOG_LEVEL=debug
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PYTHONPATH=/app
+    volumes:
+      # 挂载项目目录，方便开发时修改代码
+      - ../../:/app
+      # 持久化生成的项目
+      - projects-data:/app/projects
+    working_dir: /app
+    command: >
+      sh -c "pip install -r requirements.txt -q &&
+             uvicorn server.api:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - gamegodengine-network
+
+  # Nginx 反向代理（可选，用于生产-like 环境）
+  nginx:
+    image: nginx:alpine
+    container_name: gamegodengine-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.simple.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - gamegodengine
+    networks:
+      - gamegodengine-network
+    profiles:
+      - with-nginx
+
+# 数据卷
+volumes:
+  projects-data:
+    driver: local
+
+# 网络
+networks:
+  gamegodengine-network:
+    driver: bridge
